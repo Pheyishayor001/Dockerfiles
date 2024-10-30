@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  web:
+    image: wordsmith-web
+    ports:
+      - "8080:80"
+  
+  api:
+    image: wordsmith-api-image
+    ports:
+      - "8081:8080"
+  
+  db:
+    image: postgres
+    environment:
+      ALLOW_EMPTY_PASSWORD: "yes"
+      POSTGRES_DB: wordsmith_db
+    volumes:
+      - wordsmith-data:/postgres
+      - ./wordsmith-db/words.sql:/docker-entrypoint-initdb.d/words.sql #mounting the  SQL file here.
+    ports:
+      - "5432:5432"
+    restart: always
+
+volumes:
+  wordsmith-data:
+
